@@ -3,7 +3,6 @@ import os
 import sys
 import shutil
 import datetime
-import time
 
 # t is the required number of \t when printing, f is just check if we're supposed to print files
 def printls(path = '.',tab='\t', t = 0,f = True):
@@ -25,14 +24,26 @@ def printls(path = '.',tab='\t', t = 0,f = True):
             printls(path + '/' + e.name,tab,t+1,f)
 
 def remove_dir(dir_path):
+    #remove the directory contents
+    Ls = [entry for entry in os.scandir(dir_path)]
+    for entry in Ls:
+        if entry.is_file():
+            os.remove(entry)
+            print(str(datetime.datetime.now()) + ' ' + dir_path + '/' + entry.name + ' file removed')
+        #if dir, remove each file first
+        if  entry.is_dir():
+            remove_dir(entry.path())
+    #remove the directory
+    os.rmdir(dir_path)
+    print(str(datetime.datetime.now()) + ' ' + dir_path + ' folder removed')
     return True
 
-def copy_folder_content(origin, replica, out):
+def sync_folder_content(origin, replica, out):
     """Copy contents of the origin folder to the replica folder"""
     Ls = [entry for entry in os.scandir(origin)]
     ###
-    replica_LS = [entry.name for entry in os.scandir(replica)]
-    At = [False]*len(replica_LS)
+    replica_Ls = [entry.name for entry in os.scandir(replica)]
+    At = [False]*len(replica_Ls)
     ###
     for entry in Ls:
         #skip symlinks or hidden files
@@ -40,8 +51,8 @@ def copy_folder_content(origin, replica, out):
             continue
         
         #cataloguing files and dirs for possible removal
-        if entry.name in replica_LS:
-            At[replica_LS.index(entry.name)] = True
+        if entry.name in replica_Ls:
+            At[replica_Ls.index(entry.name)] = True
         
         replica_entry_path = replica + '/' + entry.name
         if entry.is_file():
@@ -53,15 +64,16 @@ def copy_folder_content(origin, replica, out):
             if not os.path.isdir(replica_entry_path):
                 os.mkdir(replica_entry_path,entry.stat().st_mode)
                 #shutil.copystat(origin + '/' + entry.name,replica_entry_path)
-                #print(str(os.stat(replica_entry_path).st_mtime) + ' ' + str(entry.stat().st_mtime))
                 print(str(datetime.datetime.now()) + ' ' + replica_entry_path + ' made folder')
-            copy_folder_content(origin + '/' + entry.name, replica_entry_path, out)
-    #print(At) 
-    for entry in replica_LS:
-        if not At[replica_LS.index(entry)]:
-            os.remove(replica + '/' + entry)
-            print(str(datetime.datetime.now()) + ' ' + replica + '/' + entry + ' removed')
-
+            sync_folder_content(origin + '/' + entry.name, replica_entry_path, out)
+    #removing deleted files and directories 
+    for entry in replica_Ls:
+        if not At[replica_Ls.index(entry)]:
+            if os.path.isfile(entry):
+                os.remove(replica + '/' + entry)
+                print(str(datetime.datetime.now()) + ' ' + replica + '/' + entry + ' file removed')
+            if os.path.isdir(entry):
+                remove_dir(entry)
 
 
 #first preparation function for the copy_folder_content
@@ -75,7 +87,7 @@ def copy_folder(origin = '.', replica = '../..', out = './log'):
     if not os.path.isdir(replica):
         os.mkdir(replica, os.stat(origin).st_mode)
         print(str(datetime.datetime.now()) + origin_name + ' made folder')
-    copy_folder_content(origin, replica, out)
+    sync_folder_content(origin, replica, out)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
