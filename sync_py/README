@@ -1,2 +1,57 @@
-This doesn't currently work as a module
-Functions not integrated into the final program 
+name = folder_sync_py 
+version = 1.0.0
+OS independant
+author = Jan Kotasek
+author_email = mizudrakon@gmail.com
+description = Creates a folder replica and keeps it synchronized in given intervals
+url = https://github.com/mizudrakon/sync_dirs/tree/main/sync_py
+
+For convenience there will be a single file script called folder_sync.py provided here.
+
+usage: run.py [-h] [-o OUTPUT] [-t TIME] [-m] [--hour] source destination
+
+positional arguments:
+  source                address of the source folder for sync
+  destination           adress to store the replica folder
+
+options:
+  -h, --help            show the help message and exit
+  -o, --output          specify the desired log file location (and name)
+  -t TIME, --time TIME  specify the time interval
+  -m, --minute          specify the time interval unit to minutes
+  --hour                specify the time interval unit to hours
+
+This is a Python package that can be installed, the modules are:
+arguments.py:
+    * parse_arguments(): uses argparse to return a list of arguments;
+    * arg_format_fix(args): translates linux ~ into the home folder path, removes the last separator, returns fixed arguments;
+    * arg_file_system_check(args): checks if the addresses exist, returns bool;
+sync.py:
+    * separator(): returns system appropriate path separator;
+    * print_msg(msg, file, quiet = False): function to write messages both to stdout and file;
+    * remove_dir(dir_path,log_file): function that removes all contents of a specified directory and the directory itself;
+    * sync_folder_content(path_to_origin, path_to_replica, path_to_log): Copy contents of the origin folder to the replica folder, logging in the log_file;
+    * sync_folder(origin, replica, log_file_name): Creates or enters the replica folder and starts the process;
+run.py:
+    * get_args(): manages arguments from the command line, uses parse_arguments, arg_format_fix, arg_file_system_check, returns fixed argparse args list;
+    * synchronize(src, dest, log, sync_time, min = False, hour = False): encapsulates the whole process of synchronization given the arguments...
+
+The output looks like this:
+synchronizing ../TESTdir/replica/ to ../TESTdir/original/simple with 1 minutes interval
+2023-10-14 13:39:40.140588 started synch process on: ../../../../TESTdir/original/simple
+2023-10-14 13:39:40.140770 simple folder made
+2023-10-14 13:39:40.140961 ../TESTdir/replica/simple/b - folder made
+2023-10-14 13:39:40.141551 ../TESTdir/original/simple/b/file7 - file copied
+2023-10-14 13:39:40.142111 ../TESTdir/original/simple/b/file10 - file copied
+2023-10-14 13:39:40.142504 ../TESTdir/original/simple/b/file5 - file copied
+2023-10-14 13:39:40.142802 ../TESTdir/original/simple/b/file6 - file copied
+2023-10-14 13:39:40.143034 ../TESTdir/original/simple/file8 - file copied
+2023-10-14 13:39:40.143300 ../TESTdir/original/simple/file9 - file copied
+2023-10-14 13:39:40.143453 ../TESTdir/replica/simple/a - folder made
+2023-10-14 13:39:40.143839 ../TESTdir/original/simple/a/file1 - file copied
+2023-10-14 13:39:40.144112 ../TESTdir/original/simple/a/file2 - file copied
+2023-10-14 13:39:40.144394 ../TESTdir/original/simple/a/file3 - file copied
+^CSynchronization process stopped
+
+time, path to the original file, action
+some basic info about starting the process or ending it (Ctr+C)
