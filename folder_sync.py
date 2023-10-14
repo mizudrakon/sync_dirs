@@ -1,9 +1,49 @@
 #!/usr/bin/env python3
-import os
+
+""" This is the collection of all the modules from sync_py/src/ folder to work as a single script for conveninet copying. """
+
 import sys
+import os
+import argparse
 import shutil
 import datetime
+import time
+import schedule
+import signal
 
+#ARGUMENT PARSING:
+def parse_arguments():
+    """parses the arguments for the synchronization script, only the source folder address is required, the rest is optional"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source", help="address of the source folder for sync")
+    parser.add_argument("destination", help="adress to store the replica folder", default=os.getcwd())
+    parser.add_argument("-o","--output", help="specify the desired log file location", default=os.getcwd() + "/sync.log")
+    parser.add_argument("-t","--time", help="specify the time interval",type=int, default=30)
+    parser.add_argument("-m","--minute", help="specify the time interval unit to minutes",action="store_true")
+    parser.add_argument("--hour", help="specify the time interval unit to hours",action="store_true")
+    return parser.parse_args()
+
+#remove the end slash, change ~ into home dir on linux
+def arg_format_fix(args):
+    for arg in [args.source, args.destination, args.output]:
+        if sys.platform == 'linux' and arg[0] == '~':
+            arg = os.getenv('HOME')+arg[1:]
+        if arg[-1] == '\\' or arg[-1] == '/':
+            arg = arg[:-2]
+    return args
+
+def arg_file_system_check(args):
+    """checks if the source folder and destination exists"""
+    if not os.path.isdir(args.source) or not os.path.isdir(args.destination): 
+        print("ERROR: source or destination are not real addresses!")
+        return False
+    if not os.path.isdir(args.output) and not os.path.isdir(os.path.dirname(args.output)):
+        return False
+    if os.path.isdir(args.output):
+        args.output = args.output + '/sync.log'
+    return True
+
+#SYNCHRONIZATION FUNCTIONS:
 def separator():
     if sys.platform == 'linux':
         return '/'
@@ -93,11 +133,50 @@ def sync_folder(origin, replica, log_file_name):
     sync_folder_content(origin, replica, log_file)
     log_file.close()
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        src_dir = sys.argv[1]
-    if len(sys.argv) > 2:
-        dest_dir = sys.argv[2]
+
+#MAIN FUNCTIONS:
+def signal_handler(num,frame):
+    print("Synchronization process stopped")
+    sys.exit(0)
+
+def get_args():
+    """Manages arguments from command line"""
+    args = parse_arguments()
+    args = arg_format_fix(args)
+    if not arg_file_system_check(args):
+        sys.exit(1)   
+    return args 
+
+def synchronize(src, dest, log, sync_time, min = False, hour = False):
+    """Encapsulates the whole process of synchronization"""
+    signal.signal(signal.SIGINT, signal_handler)
+    #signal.signal(signal.SIGTSTP, signal_handler)
+    
+    unit = "seconds"
+    if args.minute:
+        schedule.every(sync_time).minutes.do(sync_folder,src,dest,log)
+        unit = "minutes"
+    elif args.hour:
+        schedule.every(sync_time).hours.do(sync_folder,src,dest,log)
+        unit = "hours"
     else:
-        sys.exit(1)
-    sync_folder(src_dir, dest_dir)
+        schedule.every(sync_time).seconds.do(sync_folder,src,dest,log)
+
+    #write first log message
+    with open(log, 'a') as log_file:
+        print_msg("synchronizing " + dest + " to " + src + " with " + str(sync_time) + ' ' + unit + " interval", log_file)
+    #do first sync
+    sync_folder(src, dest, log)
+    #continue on schedule
+    while (True):
+        schedule.run_pending()
+        time.sleep(1)
+
+
+if __name__ == '__main__':
+    args = parse_arguments()
+    args = arg_format_fix(args)
+    if not arg_file_system_check(args):
+        sys.exit(1)    
+    args = get_args()
+    synchronize(args.source, args.destination, args.output, args.time, args.minute, args.hour)
