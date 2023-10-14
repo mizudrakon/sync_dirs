@@ -1,0 +1,59 @@
+synchronizing ..\..\..\TESTdir\replica\ to ..\..\..\TESTdir\original\simple\ with 30 seconds interval
+2023-10-14 13:11:07.874679 started synch process on: ..\..\..\TESTdir\original\simple\
+2023-10-14 13:11:07.925543 ..\..\..\TESTdir\replica\//a - folder made
+2023-10-14 13:11:08.012312 ..\..\..\TESTdir\original\simple\/a\file1 - file copied
+2023-10-14 13:11:08.056193 ..\..\..\TESTdir\original\simple\/a\file2 - file copied
+2023-10-14 13:11:08.080129 ..\..\..\TESTdir\original\simple\/a\file3 - file copied
+2023-10-14 13:11:08.134983 ..\..\..\TESTdir\replica\//b - folder made
+2023-10-14 13:11:08.297549 ..\..\..\TESTdir\original\simple\/b\file10 - file copied
+2023-10-14 13:11:08.385314 ..\..\..\TESTdir\original\simple\/b\file5 - file copied
+2023-10-14 13:11:08.442162 ..\..\..\TESTdir\original\simple\/b\file6 - file copied
+2023-10-14 13:11:08.467099 ..\..\..\TESTdir\original\simple\/b\file7 - file copied
+2023-10-14 13:11:08.469213 ..\..\..\TESTdir\original\simple\file8 - file copied
+2023-10-14 13:11:08.494030 ..\..\..\TESTdir\original\simple\file9 - file copied
+2023-10-14 13:11:37.931198 started synch process on: ..\..\..\TESTdir\original\simple\
+2023-10-14 13:12:08.147811 started synch process on: ..\..\..\TESTdir\original\simple\
+2023-10-14 13:12:38.314930 started synch process on: ..\..\..\TESTdir\original\simple\
+2023-10-14 13:13:08.478579 started synch process on: ..\..\..\TESTdir\original\simple\
+synchronizing ..\..\..\TESTdir\replica\ to ..\..\..\TESTdir\original\simple with 30 seconds interval
+2023-10-14 13:23:10.454212 started synch process on: ..\..\..\TESTdir\original\simple
+2023-10-14 13:23:10.455255 simple folder made
+2023-10-14 13:23:10.455255 ..\..\..\TESTdir\replica\\simple\a - folder made
+2023-10-14 13:23:10.457205 ..\..\..\TESTdir\original\simple\a\file1 - file copied
+2023-10-14 13:23:10.459251 ..\..\..\TESTdir\original\simple\a\file2 - file copied
+2023-10-14 13:23:10.460710 ..\..\..\TESTdir\original\simple\a\file3 - file copied
+2023-10-14 13:23:10.461195 ..\..\..\TESTdir\replica\\simple\b - folder made
+2023-10-14 13:23:10.462238 ..\..\..\TESTdir\original\simple\b\file10 - file copied
+2023-10-14 13:23:10.464188 ..\..\..\TESTdir\original\simple\b\file5 - file copied
+2023-10-14 13:23:10.466181 ..\..\..\TESTdir\original\simple\b\file6 - file copied
+2023-10-14 13:23:10.467187 ..\..\..\TESTdir\original\simple\b\file7 - file copied
+2023-10-14 13:23:10.469174 ..\..\..\TESTdir\original\simple\file8 - file copied
+2023-10-14 13:23:10.471168 ..\..\..\TESTdir\original\simple\file9 - file copied
+synchronizing ..\..\..\TESTdir\replica\ to ..\..\..\TESTdir\original\simple with 30 seconds interval
+2023-10-14 13:26:34.592126 started synch process on: ..\..\..\TESTdir\original\simple
+2023-10-14 13:26:34.592126 simple folder made
+2023-10-14 13:26:34.593124 ..\..\..\TESTdir\replica\\simple\a - folder made
+2023-10-14 13:26:34.595118 ..\..\..\TESTdir\original\simple\a\file1 - file copied
+2023-10-14 13:26:34.596115 ..\..\..\TESTdir\original\simple\a\file2 - file copied
+2023-10-14 13:26:34.598449 ..\..\..\TESTdir\original\simple\a\file3 - file copied
+2023-10-14 13:26:34.599107 ..\..\..\TESTdir\replica\\simple\b - folder made
+2023-10-14 13:26:34.600165 ..\..\..\TESTdir\original\simple\b\file10 - file copied
+2023-10-14 13:26:34.603097 ..\..\..\TESTdir\original\simple\b\file5 - file copied
+2023-10-14 13:26:34.605092 ..\..\..\TESTdir\original\simple\b\file6 - file copied
+2023-10-14 13:26:34.606088 ..\..\..\TESTdir\original\simple\b\file7 - file copied
+2023-10-14 13:26:34.608084 ..\..\..\TESTdir\original\simple\file8 - file copied
+2023-10-14 13:26:34.609083 ..\..\..\TESTdir\original\simple\file9 - file copied
+synchronizing ..\..\..\TESTdir\replica\ to ..\..\..\TESTdir\original\simple with 30 seconds interval
+2023-10-14 13:33:29.480277 started synch process on: ..\..\..\TESTdir\original\simple
+2023-10-14 13:33:29.480277 simple folder made
+2023-10-14 13:33:29.481272 ..\..\..\TESTdir\replica\simple\a - folder made
+2023-10-14 13:33:29.482269 ..\..\..\TESTdir\original\simple\a\file1 - file copied
+2023-10-14 13:33:29.484263 ..\..\..\TESTdir\original\simple\a\file2 - file copied
+2023-10-14 13:33:29.486507 ..\..\..\TESTdir\original\simple\a\file3 - file copied
+2023-10-14 13:33:29.487273 ..\..\..\TESTdir\replica\simple\b - folder made
+2023-10-14 13:33:29.488271 ..\..\..\TESTdir\original\simple\b\file10 - file copied
+2023-10-14 13:33:29.490587 ..\..\..\TESTdir\original\simple\b\file5 - file copied
+2023-10-14 13:33:29.492242 ..\..\..\TESTdir\original\simple\b\file6 - file copied
+2023-10-14 13:33:29.494237 ..\..\..\TESTdir\original\simple\b\file7 - file copied
+2023-10-14 13:33:29.496646 ..\..\..\TESTdir\original\simple\file8 - file copied
+2023-10-14 13:33:29.498244 ..\..\..\TESTdir\original\simple\file9 - file copied

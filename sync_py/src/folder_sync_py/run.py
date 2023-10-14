@@ -20,7 +20,7 @@ def get_args():
 def synchronize(src, dest, log, sync_time, min = False, hour = False):
     """Encapsulates the whole process of synchronization"""
     signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTSTP, signal_handler)
+    #signal.signal(signal.SIGTSTP, signal_handler)
     
     unit = "seconds"
     if args.minute:

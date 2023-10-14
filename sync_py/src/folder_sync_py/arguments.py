@@ -21,7 +21,7 @@ def arg_format_fix(args):
         if sys.platform == 'linux' and arg[0] == '~':
             arg = os.getenv('HOME')+arg[1:]
         if arg[-1] == '\\' or arg[-1] == '/':
-            arg = arg[:-1]
+            arg = arg[:-2]
     return args
 
 def arg_file_system_check(args):

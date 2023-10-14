@@ -6,6 +6,10 @@ import datetime
 
 #I'm just using '/' as delimiter in paths becaue I expect os and shutil to handle it in Windows too
 #I'll test it later and switch to a platform dependant variable if it doesn't work
+def separator():
+    if sys.platform == 'linux':
+        return '/'
+    return '\\'
 
 def print_msg(msg, file, quiet = False):
     """Function to write messages both to stdout and file"""
@@ -20,7 +24,7 @@ def remove_dir(dir_path,log_file):
     for entry in Ls:
         if entry.is_file():
             os.remove(entry)
-            print_msg(str(datetime.datetime.now()) + ' ' + dir_path + '/' + entry.name + ' file removed', log_file)
+            print_msg(str(datetime.datetime.now()) + ' ' + dir_path + separator() + entry.name + ' file removed', log_file)
             continue
         #if dir, remove each file first
         if  entry.is_dir():
@@ -47,7 +51,7 @@ def sync_folder_content(origin, replica, log_file):
         if entry.name in replica_Ls:
             At[replica_Ls.index(entry.name)] = True
         
-        replica_entry_path = replica + '/' + entry.name
+        replica_entry_path = replica + separator() + entry.name
         if entry.is_file():
             #copy file if it doesn't exist, or copy over if it needs updating
             if not os.path.isfile(replica_entry_path) or entry.stat().st_mtime > os.stat(replica_entry_path).st_mtime:
@@ -61,10 +65,10 @@ def sync_folder_content(origin, replica, log_file):
                 os.mkdir(replica_entry_path,entry.stat().st_mode)
                 print_msg(str(datetime.datetime.now()) + ' ' + replica_entry_path + ' - folder made', log_file)
             #even if it does, we need to enter it and check its content
-            sync_folder_content(origin + '/' + entry.name, replica_entry_path, log_file)
+            sync_folder_content(origin + separator() + entry.name, replica_entry_path, log_file)
     #removing deleted files and directories 
     for entry in replica_Ls:
-        path_to_entry = replica + '/' + entry
+        path_to_entry = replica + separator() + entry
         if not At[replica_Ls.index(entry)]:
             if os.path.isfile(path_to_entry):
                 os.remove(path_to_entry)
@@ -82,11 +86,12 @@ def sync_folder(origin, replica, log_file_name):
 
     print_msg(str(datetime.datetime.now()) + ' started synch process on: ' + origin, log_file)
     origin_name = os.path.basename(origin)
-    replica = replica + '/' + origin_name 
+    #replica = replica + separator() + origin_name 
+    replica = replica + origin_name 
     if not os.path.isdir(replica):
     #make the root dir
         os.mkdir(replica, os.stat(origin).st_mode)
-        print_msg(str(datetime.datetime.now()) + ' ' + origin_name + ' made folder', log_file)
+        print_msg(str(datetime.datetime.now()) + ' ' + origin_name + ' folder made', log_file)
     sync_folder_content(origin, replica, log_file)
     log_file.close()
 
