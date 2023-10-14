@@ -16,7 +16,7 @@ def parse_arguments():
     return parser.parse_args()
 
 #remove the end slash, change ~ into home dir on linux
-def format_fix(args):
+def arg_format_fix(args):
     for arg in [args.source, args.destination, args.output]:
         if sys.platform == 'linux' and arg[0] == '~':
             arg = os.getenv('HOME')+arg[1:]
@@ -24,7 +24,7 @@ def format_fix(args):
             arg = arg[:-1]
     return args
 
-def file_system_check(args):
+def arg_file_system_check(args):
     """checks if the source folder and destination exists"""
     if not os.path.isdir(args.source) or not os.path.isdir(args.destination): 
         print("ERROR: source or destination are not real addresses!")
@@ -38,9 +38,9 @@ def file_system_check(args):
 #testing
 if __name__ == '__main__':
     args = parse_arguments()
-    args = format_fix(args)
+    args = arg_format_fix(args)
     print(args)
-    if not file_system_check(args):
+    if not arg_file_system_check(args):
         print("Error in user input!")
         sys.exit(1)
     sys.exit(0)
